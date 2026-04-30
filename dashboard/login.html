@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AarogyaNet - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .brand-icon {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: white;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+        .login-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        .login-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; }
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .btn-login {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        .auth-links {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .auth-links a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .auth-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand-icon"><i class="fa-solid fa-notes-medical"></i></div>
+        <h2 id="formTitle">AarogyaNet</h2>
+        <p id="formSubtitle">Sign in to access the Dashboard</p>
+        
+        <form action="index.html">
+            <div class="input-group" id="nameGroup" style="display: none;">
+                <label>Full Name</label>
+                <input type="text" id="nameInput" placeholder="Dr. Sarah Sharma">
+            </div>
+            <div class="input-group">
+                <label>Email ID or Phone Number</label>
+                <input type="text" id="credInput" placeholder="Enter your credentials" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-login" id="submitBtn">Sign In</button>
+        </form>
+        
+        <div class="auth-links">
+            <p><span id="toggleTextSpan">Don't have an account? </span><a href="#" id="toggleBtn">Register System</a></p>
+        </div>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        let isLogin = true;
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            
+            // Toggle Text
+            document.getElementById('formTitle').innerText = isLogin ? "AarogyaNet" : "Create Account";
+            document.getElementById('formSubtitle').innerText = isLogin ? "Sign in to access the Dashboard" : "Register as a Medical Officer";
+            
+            // Toggle Name Field for Registration
+            document.getElementById('nameGroup').style.display = isLogin ? "none" : "block";
+            document.getElementById('nameInput').required = !isLogin;
+            
+            // Toggle Button & Link
+            document.getElementById('submitBtn').innerText = isLogin ? "Sign In" : "Sign Up & Enter";
+            document.getElementById('toggleTextSpan').innerText = isLogin ? "Don't have an account? " : "Already registered? ";
+            toggleBtn.innerText = isLogin ? "Register System" : "Sign In here";
+        });
+
+        // Intercept form submission to save name to localStorage
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Stop default HTML routing
+            
+            let userName = "Medical Officer";
+            if (!isLogin) {
+                // If signing up, grab the full name
+                userName = document.getElementById('nameInput').value || "New Doctor";
+            } else {
+                // If signing in, extract a name from the email/phone
+                const creds = document.getElementById('credInput').value;
+                if (creds.includes('@')) {
+                    let prefix = creds.split('@')[0];
+                    userName = "Dr. " + prefix.charAt(0).toUpperCase() + prefix.slice(1);
+                } else {
+                    userName = "Dr. User"; 
+                }
+            }
+            
+            // Save to browser storage temporarily
+            localStorage.setItem('aarogyaNetUser', userName);
+            
+            // Redirect to dashboard
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

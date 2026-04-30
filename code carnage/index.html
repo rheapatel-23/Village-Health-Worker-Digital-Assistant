@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarogya - Village Health Monitoring</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for beautiful graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <span class="brand-text">AarogyaNet</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="patients.html" class="nav-item"><i class="fa-solid fa-users"></i> Patients</a>
+                <a href="alerts.html" class="nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="auth-btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign In Account
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="sidebarToggle" style="background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px;"><i class="fa-solid fa-bars"></i></button>
+                    <div>
+                        <h1 class="page-title" id="welcomeMessage">Overview</h1>
+                        <p class="date-display" id="currentDate">Today</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <!-- Network Status (Crucial for the Hackathon Pitch) -->
+                    <div class="sync-status offline" id="syncStatus">
+                        <span class="pulse-dot"></span>
+                        <span id="syncText">Waiting for App Sync (Offline)</span>
+                    </div>
+                    <button class="btn-primary" id="downloadBtn">
+                        <i class="fa-solid fa-download"></i> Generate Report
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- AI Alert Box -->
+                <div class="ai-glass-box">
+                    <div class="ai-icon-glow">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="ai-content">
+                        <h3>AI Risk Assessment</h3>
+                        <p id="aiAlertText">Our system has flagged <span class="highlight-red" id="aiAlertCount">-- high-risk cases</span> from today's ASHA sync. SMS alerts sent successfully. <a href="alerts.html">Review immediately &rarr;</a></p>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon blue-grad"><i class="fa-solid fa-hospital-user"></i></div>
+                        <div class="kpi-details">
+                            <span class="kpi-title">Total Patients Reg.</span>
+                            <span class="kpi-value" id="kpiTotal">--</span>
+                            <span class="kpi-trend positive"><i class="fa-solid fa-mobile-screen"></i> Synced from ASHA devices</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon red-grad"><i class="fa-solid fa-heart-crack"></i></div>
+                        <div class="kpi-details">
+                            <span class="kpi-title">Active High Risk</span>
+                            <span class="kpi-value" id="kpiHighRisk">--</span>
+                            <span class="kpi-trend negative"><i class="fa-solid fa-circle-exclamation"></i> Requires attention</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon teal-grad"><i class="fa-solid fa-baby"></i></div>
+                        <div class="kpi-details">
+                            <span class="kpi-title">Pregnant Women</span>
+                            <span class="kpi-value" id="kpiPregnant">--</span>
+                            <span class="kpi-trend positive"><i class="fa-solid fa-check"></i> Monitoring ANC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Risk Distribution</h3>
+                        <div class="chart-canvas-wrapper">
+                            <canvas id="riskDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Weekly Village Screenings</h3>
+                        <div class="chart-canvas-wrapper">
+                            <canvas id="weeklyBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-card">
+                    <div class="table-header-box">
+                        <h3>Recent Synced Records</h3>
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="searchInput" placeholder="Search by name, ID or symptom...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient Info</th>
+                                    <th>Vitals (BP/Temp/Hb)</th>
+                                    <th>
+                                        <span style="color: #7e22ce;">Maternal</span> / 
+                                        <span style="color: #d97706;">Child</span> / 
+                                        <span style="color: #0284c7;">Vaccines</span>
+                                    </th>
+                                    <th>Reported Symptoms</th>
+                                    <th>ASHA Worker</th>
+                                    <th>Risk Alert</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

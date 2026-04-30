@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients - AarogyaNet</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <span class="brand-text">AarogyaNet</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="patients.html" class="nav-item active"><i class="fa-solid fa-users"></i> Patients</a>
+                <a href="alerts.html" class="nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="auth-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign In Account</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="sidebarToggle" style="background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px;"><i class="fa-solid fa-bars"></i></button>
+                    <h1 class="page-title">Patient Directory</h1>
+                </div>
+                <div class="topbar-right">
+                    <!-- Manual entry removed to enforce automated sync -->
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="table-header-box" style="background: var(--bg-card); border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--border); box-shadow: var(--shadow-card);">
+                    <h3>Detailed Patient Records</h3>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Search by name, ID or symptom...">
+                    </div>
+                </div>
+                
+                <div class="patients-grid" id="patientsGrid">
+                    <!-- Cards dynamically injected by script.js -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AarogyaNet</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <span class="brand-text">AarogyaNet</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <a href="patients.html" class="nav-item"><i class="fa-solid fa-users"></i> Patients</a>
+                <a href="alerts.html" class="nav-item"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="settings.html" class="nav-item active"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="auth-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign In Account</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="sidebarToggle" style="background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px;"><i class="fa-solid fa-bars"></i></button>
+                    <h1 class="page-title">Global Settings</h1>
+                </div>
+            </header>
+            <div class="content-wrapper">
+                <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 32px; max-width: 600px;">
+                    <h3 style="margin-bottom: 24px;">SMS Notification Preferences</h3>
+                    
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border);">
+                        <div>
+                            <strong>High Risk Pregnancy Alerts</strong>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Send immediate SMS to CMO when a red flag is synced.</p>
+                        </div>
+                        <button class="btn-primary toggle-btn" style="background-color: var(--green-safe);">Enabled</button>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border);">
+                        <div>
+                            <strong>Malnutrition (SAM) Warnings</strong>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Route warnings to Pediatric department automatically.</p>
+                        </div>
+                        <button class="btn-primary toggle-btn" style="background-color: var(--green-safe);">Enabled</button>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 0;">
+                        <div>
+                            <strong>Daily Auto-Report (PDF)</strong>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Email the daily generated report every evening at 8:00 PM.</p>
+                        </div>
+                        <button class="btn-primary toggle-btn" style="background: transparent; color: var(--text-main); border: 2px solid var(--border); box-shadow: none;">Disabled</button>
+                    </div>
+
+                    <button class="btn-primary" id="savePrefsBtn" style="margin-top: 24px; width: 100%; justify-content: center;">Save Preferences</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 1. Load Saved Preferences on Page Load
+        const toggles = document.querySelectorAll('.toggle-btn');
+        
+        // Define default states if nothing is saved
+        const defaultStates = ["Enabled", "Enabled", "Disabled"];
+        
+        toggles.forEach((btn, index) => {
+            // Load from storage, or use default
+            const savedState = localStorage.getItem(`setting_toggle_${index}`) || defaultStates[index];
+            
+            if (savedState === "Enabled") {
+                btn.innerText = "Enabled";
+                btn.style.backgroundColor = "var(--green-safe)";
+                btn.style.color = "white";
+                btn.style.border = "none";
+                btn.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.2)";
+            } else {
+                btn.innerText = "Disabled";
+                btn.style.backgroundColor = "transparent";
+                btn.style.color = "var(--text-main)";
+                btn.style.border = "2px solid var(--border)";
+                btn.style.boxShadow = "none";
+            }
+
+            // 2. Click Logic (Only changes visual state temporarily until saved)
+            btn.addEventListener('click', function() {
+                if (this.innerText === "Enabled") {
+                    this.innerText = "Disabled";
+                    this.style.backgroundColor = "transparent";
+                    this.style.color = "var(--text-main)";
+                    this.style.border = "2px solid var(--border)";
+                    this.style.boxShadow = "none";
+                } else {
+                    this.innerText = "Enabled";
+                    this.style.backgroundColor = "var(--green-safe)";
+                    this.style.color = "white";
+                    this.style.border = "none";
+                    this.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.2)";
+                }
+            });
+        });
+
+        // 3. Save Preferences Animation & Storage
+        const saveBtn = document.getElementById('savePrefsBtn');
+        saveBtn.addEventListener('click', () => {
+            const originalText = saveBtn.innerText;
+            
+            // Actually save the current text of each button to localStorage
+            toggles.forEach((btn, index) => {
+                localStorage.setItem(`setting_toggle_${index}`, btn.innerText);
+            });
+
+            // UI Animation
+            saveBtn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Saving...";
+            saveBtn.style.opacity = "0.8";
+            setTimeout(() => {
+                saveBtn.innerHTML = "<i class='fa-solid fa-check'></i> Preferences Saved";
+                saveBtn.style.backgroundColor = "var(--green-safe)";
+                saveBtn.style.opacity = "1";
+                setTimeout(() => {
+                    saveBtn.innerText = originalText;
+                    saveBtn.style.backgroundColor = "var(--primary)";
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
