@@ -1,31 +1,73 @@
-# Village Health Worker Digital Assistant (ASHA Saathi)
+<div align="center">
+  <img src="public/icons.svg" alt="ASHA Saathi Logo" width="120" />
+  <h1>ASHA Saathi (Village Health Worker Digital Assistant)</h1>
+  <p>Empowering Accredited Social Health Activists (ASHAs) with offline-first digital tools.</p>
 
-## Overview
-ASHA Saathi is a comprehensive digital platform designed to empower Accredited Social Health Activists (ASHAs) by streamlining their daily tasks, patient management, and communication with supervising medical officers. 
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Platform: Android](https://img.shields.io/badge/Platform-Android-green.svg)]()
+  [![Backend: Node.js](https://img.shields.io/badge/Backend-Node.js-blue.svg)]()
+</div>
 
-The system provides an offline-first mobile application for health workers to use in the field and a web-based dashboard for doctors to monitor patient data and alerts in real-time.
+## 📖 Overview
 
-## Project Structure
-The repository is divided into three main components:
+**ASHA Saathi** is a comprehensive digital platform designed to empower Accredited Social Health Activists (ASHAs) in rural areas. By streamlining daily tasks, patient management, and communication with supervising medical officers, the platform ensures efficient and error-free healthcare delivery.
 
-1. **AshaSaathiAndroid**
-   - **Type:** Native Android Application (Kotlin)
-   - **Purpose:** Used by ASHA workers in the field. Provides offline-first capabilities for patient data entry, viewing health records, and syncing data when internet connectivity is available.
-   
+The system features an **offline-first mobile application** for health workers in the field and a **web-based dashboard** for doctors to monitor real-time data and alerts.
+
+## ✨ Key Features
+
+- **📶 Offline-First Architecture:** ASHA workers can input patient data and fill out health forms without an active internet connection. Data securely syncs to the central database once connectivity is restored.
+- **📊 Doctor's Dashboard:** A centralized, responsive web interface for medical officers to monitor real-time health data, patient vitals, and view high-priority alerts.
+- **🔐 Role-Based Access:** Secure and tailored login flows for ASHA workers (Mobile App) and Doctors/Supervisors (Web Dashboard).
+- **🚨 Automated Alerts:** Immediate notification to supervisors for critical patient vitals or missed follow-ups.
+
+## 🏗️ System Architecture
+
+1. **AshaSaathiAndroid (`/AshaSaathiAndroid`)**
+   - **Type:** Native Android Application (Kotlin, Jetpack Compose)
+   - **Local DB:** Room / SQLite for offline caching
+   - **Networking:** Retrofit & WorkManager for background syncing
+
 2. **Backend Server (`/backend`)**
-   - **Type:** Node.js / Express
-   - **Purpose:** The central API server managing data synchronization between the mobile app and the doctor dashboard. It handles patient records, authentication, and database operations.
+   - **Type:** Node.js / Express API
+   - **Database:** SQLite (`ashasaathi.db`) for lightweight and fast data persistence.
+   - **Role:** Central synchronization hub connecting the mobile app and dashboard.
 
 3. **Web Dashboard (`/dashboard`)**
-   - **Type:** HTML / CSS / Vanilla JavaScript
-   - **Purpose:** A responsive web interface for doctors and supervisors to monitor real-time health data, view patient alerts, and track the progress of ASHA workers.
+   - **Type:** Vanilla HTML / CSS / JS
+   - **Role:** Web interface served dynamically or statically via the backend.
 
-## Key Features
-- **Offline-First Sync:** Health workers can input data without internet connectivity, which syncs seamlessly with the backend once online.
-- **Real-Time Dashboard:** Doctors can view patient vitals, alerts, and general health statistics on a centralized dashboard.
-- **Role-Based Access:** Secure login flows tailored for ASHA workers (app) and doctors (web).
+## 🚀 Getting Started
 
-## Setup & Run
-- **Backend:** Navigate to `/backend`, run `npm install`, then start the server.
-- **Dashboard:** Served statically by the backend or can be run locally via a live server.
-- **Android App:** Open the `AshaSaathiAndroid` folder in Android Studio and build the project.
+### Prerequisites
+- [Node.js](https://nodejs.org/en/) (v16 or higher)
+- [Android Studio](https://developer.android.com/studio) (for mobile app)
+- Java JDK 17
+
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+npm start
+```
+The API server will start on `http://localhost:3000`.
+
+### 2. Web Dashboard
+The dashboard is served automatically by the backend. Once the backend is running, navigate to:
+```
+http://localhost:3000/dashboard
+```
+
+### 3. Android Application
+1. Open Android Studio.
+2. Select **Open an existing project** and choose the `AshaSaathiAndroid` folder.
+3. Allow Gradle to sync dependencies.
+4. Build and run the app on an emulator or physical device.
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) for more details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
